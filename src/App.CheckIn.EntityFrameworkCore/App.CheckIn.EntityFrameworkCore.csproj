@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Migrations\20190515141804_CreateDatabase.cs" />
+      <Compile Remove="Migrations\20190515141804_CreateDatabase.Designer.cs" />
+      <Compile Remove="Migrations\20190515171116_CreateDatabase.cs" />
+      <Compile Remove="Migrations\20190515171116_CreateDatabase.Designer.cs" />
+      <Compile Remove="Migrations\20190517140011_CreateDatabase.cs" />
+      <Compile Remove="Migrations\20190517140011_CreateDatabase.Designer.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.2.0" />
+        <PackageReference Include="Tnf.EntityFrameworkCore" Version="2.6.2.13301" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\App.CheckIn.Domain\App.CheckIn.Domain.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -17,6 +17,7 @@ namespace App.CheckIn.Domain
             string eventDescription,
             string eventRoom,
             bool enablePushNotification,
+            NotificationServiceType notificationService,
             string notificationToken)
         {
             Id = Guid.NewGuid();
@@ -30,6 +31,7 @@ namespace App.CheckIn.Domain
             EventDescription = eventDescription;
             EventRoom = eventRoom;
             EnablePushNotification = enablePushNotification;
+            NotificationService = notificationService;
             NotificationToken = notificationToken;
         }
 
@@ -82,6 +84,11 @@ namespace App.CheckIn.Domain
         /// Indicates whether or not the user wants to receive notifications of this subscription
         /// </summary>
         public bool EnablePushNotification { get; private set; }
+
+        /// <summary>
+        /// Indicates which Notification Service should be used to send notifications
+        /// </summary>
+        public NotificationServiceType NotificationService { get; private set; }
 
         /// <summary>
         /// Notification token required to send notification do the user device

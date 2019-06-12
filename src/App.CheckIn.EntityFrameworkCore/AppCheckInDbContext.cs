@@ -26,6 +26,10 @@ namespace App.CheckIn.EntityFrameworkCore
                 entity.Property(s => s.Id)
                     .HasValueGenerator<GuidValueGenerator>()
                     .ValueGeneratedOnAdd();
+
+                entity.Property(s => s.NotificationService)
+                    .HasConversion<string>()
+                    .HasDefaultValue(NotificationServiceType.Firebase);
             });
         }
     }

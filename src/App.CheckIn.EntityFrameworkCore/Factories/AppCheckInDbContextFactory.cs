@@ -16,9 +16,11 @@ namespace App.CheckIn.EntityFrameworkCore.Factories
                     .AddEnvironmentVariables()
                     .Build();
 
+            var dbConfiguratio = new DatabaseConfiguration(configuration);
+
             var builder = new DbContextOptionsBuilder<AppCheckInDbContext>();
 
-            builder.UseNpgsql(configuration["ConnectionString"]);
+            builder.UseNpgsql(dbConfiguratio.ConnectionString);
 
             return new AppCheckInDbContext(builder.Options, NullTnfSession.Instance);
         }

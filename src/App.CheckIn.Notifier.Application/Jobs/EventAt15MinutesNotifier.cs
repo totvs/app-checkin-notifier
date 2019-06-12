@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 using App.CheckIn.Domain.Repositories;
@@ -14,21 +15,22 @@ namespace AppCheckInNotifier
     public class EventAt15MinutesNotifier
     {
         private readonly IEventSubscriptionRepository _eventSubscriptionRepository;
-        private readonly INotificationService _notificationService;
+        private readonly IEnumerable<INotificationService> _notificationServices;
         private readonly ILogger<EventAt15MinutesNotifier> _logger;
 
         public EventAt15MinutesNotifier(
             IEventSubscriptionRepository eventSubscriptionRepository,
-            INotificationService notificationService,
+            IEnumerable<INotificationService> notificationServices,
             ILogger<EventAt15MinutesNotifier> logger)
         {
             _eventSubscriptionRepository = eventSubscriptionRepository;
-            _notificationService = notificationService;
+            _notificationServices = notificationServices;
             _logger = logger;
         }
 
         public async Task NotifyAsync()
         {
+            //Fixa a cultura em pt-BR
             CultureInfo.CurrentUICulture = CultureInfo.GetCultureInfo("pt-BR");
 
             var range = new DateRange(DateTimeOffset.Now, DateTimeOffset.Now.AddMinutes(15));
@@ -37,7 +39,10 @@ namespace AppCheckInNotifier
 
             if (subscriptions.Count > 0)
             {
-                await _notificationService.NotifyAttendantsAsync(subscriptions);
+                foreach (var notificationService in _notificationServices)
+                {
+                    await notificationService.NotifyAttendantsAsync(subscriptions);
+                }
 
                 subscriptions.ForEach(s => s.MarkAsNotified());
 

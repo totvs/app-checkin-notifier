@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using App.CheckIn.Domain;
-using AppCheckInNotifier.Application.FirebaseCloudMessaging;
 using AppCheckInNotifier.Application.Localization;
+using AppCheckInNotifier.Application.Services;
 using FCM.Net;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Tnf.Localization;
 
-namespace AppCheckInNotifier.Application.Services
+namespace AppCheckInNotifier.Application.FirebaseCloudMessaging
 {
     /// <summary>
     /// Service for send event notification to Firebase
@@ -32,12 +33,21 @@ namespace AppCheckInNotifier.Application.Services
 
         public async Task NotifyAttendantsAsync(List<EventSubscription> subscriptions)
         {
+            subscriptions = subscriptions
+                .Where(s => s.NotificationService == NotificationServiceType.Firebase)
+                .ToList();
+
+            if (subscriptions.Count <= 0)
+            {
+                return;
+            }
+
             var now = DateTimeOffset.Now;
             var titleFormat = _applicationLocalizationSource.GetString(NotificationStrings.NoticationTileFormat);
             var bodyFormat = _applicationLocalizationSource.GetString(NotificationStrings.NoticationBodyFormat);
 
             _logger.LogNotificationsCount(subscriptions.Count);
-            _logger.SendingNotificationsToServerKey(_options.ServerKey);
+            _logger.LogFMCServerKey(_options.ServerKey);
 
             using (var sender = new Sender(_options.ServerKey))
             {
@@ -49,11 +59,11 @@ namespace AppCheckInNotifier.Application.Services
                         Notification = CreateNotification(subscription, now, titleFormat, bodyFormat)
                     };
 
-                    _logger.LogNotification(message);
+                    _logger.LogFMCMessage(message);
 
                     var response = await sender.SendAsync(message);
 
-                    _logger.LogResponseContent(response);
+                    _logger.LogFMCResponse(response);
                 }
             }
         }
@@ -71,12 +81,6 @@ namespace AppCheckInNotifier.Application.Services
                 Title = string.Format(titleFormat, subscription.EventName, (int)timeToEventStart.TotalMinutes),
                 Body = string.Format(bodyFormat, subscription.EventName, (int)timeToEventStart.TotalMinutes, subscription.EventRoom)
             };
-        }
-
-        enum NotificationStrings
-        {
-            NoticationTileFormat,
-            NoticationBodyFormat
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using App.CheckIn.EntityFrameworkCore;
 using AppCheckInNotifier;
-using AppCheckInNotifier.Application.FirebaseCloudMessaging;
-using AppCheckInNotifier.Application.Hangfire;
 using AppCheckInNotifier.Application.Localization;
-using AppCheckInNotifier.Application.Services;
-using Hangfire;
-using Hangfire.PostgreSql;
 using Tnf.Configuration;
 using Tnf.Localization;
 using Tnf.Localization.Dictionaries;
@@ -23,23 +18,11 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddApplication(this IServiceCollection services, DatabaseConfiguration databaseConfiguration)
         {
             services.AddEntityFrameworkCore(databaseConfiguration);
-
-            services.AddHangfire(c =>
-            {
-                c.UsePostgreSqlStorage(databaseConfiguration.ConnectionString);
-            });
-
-            services.Configure<FirebaseCloudMessagingOptions>(databaseConfiguration.Configuration);
-
-            services.AddSingleton(new BackgroundJobServerOptions
-            {
-                TimeZoneResolver = new TimeZoneResolver()
-            });
+            services.AddFirebaseCloudMessaging(databaseConfiguration.Configuration);
+            services.AddEngageSpot(databaseConfiguration.Configuration);
+            services.AddHangFire(databaseConfiguration);
 
             services.AddHostedService<ApplicationJobsRegistrar>();
-            services.AddHangfireServer();
-
-            services.AddSingleton<INotificationService, FirebaseNotificationService>();
 
             return services;
         }

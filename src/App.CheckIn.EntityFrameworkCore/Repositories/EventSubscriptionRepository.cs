@@ -57,5 +57,10 @@ namespace App.CheckIn.EntityFrameworkCore.Repositories
             return Table.Where(es => es.UserId == userId)
                 .ToListDtoAsync(requestAllDto);
         }
+
+        public async Task<bool> HasSubscriptionAsync(long userId, string eventCode)
+        {
+            return await CountAsync(s => s.UserId == userId && s.EventCode == eventCode) > 0;
+        }
     }
 }

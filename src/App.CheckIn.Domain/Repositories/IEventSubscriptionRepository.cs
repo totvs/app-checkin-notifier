@@ -33,6 +33,20 @@ namespace App.CheckIn.Domain.Repositories
         Task<EventSubscription> GetSubscriptionAsync(long userId, string eventCode);
 
         /// <summary>
+        /// Checks if there is an event subscription with a the given userId and eventCode
+        /// </summary>
+        /// <param name="userId">The user id</param>
+        /// <param name="eventCode">The event code</param>
+        /// <returns>True if exists, false if not</returns>
+        Task<bool> HasSubscriptionAsync(long userId, string eventCode);
+
+        /// <summary>
+        /// Deletes de given event subscription
+        /// </summary>
+        /// <param name="eventSubscription">The event subscription to be deleted</param>
+        Task DeleteAsync(EventSubscription eventSubscription);
+
+        /// <summary>
         /// Updates a list of <see cref="EventSubscription"/>
         /// </summary>
         /// <param name="subscriptions">The list of <see cref="EventSubscription"/> to be updated</param>

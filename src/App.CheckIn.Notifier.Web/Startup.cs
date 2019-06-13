@@ -20,6 +20,9 @@ namespace AppCheckInNotifier
         {
             services.AddApplication(_databaseConfiguration);
 
+            services.AddHealthChecks()
+                .AddDbContextCheck<AppCheckInDbContext>();
+
             services.AddTnfAspNetCore();
 
             return services.BuildServiceProvider();
@@ -27,6 +30,8 @@ namespace AppCheckInNotifier
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseHealthChecks("/health_check");
+
             app.UseTnfAspNetCore(c =>
             {
                 c.ConfigureApplicationLocalization();

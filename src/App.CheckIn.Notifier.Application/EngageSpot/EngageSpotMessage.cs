@@ -27,7 +27,7 @@ namespace App.CheckIn.Notifier.Application.EngageSpot
                 {
                     Title = title,
                     Message = message,
-                    Icon = "http://engagespot.co/blog/wp-content/uploads/2017/02/wpengage.jpg",
+                    Icon = "https://www.totvs.com/wp-content/uploads/2019/01/logo.png",
                     Url = "http://google.com"
                 }
             };

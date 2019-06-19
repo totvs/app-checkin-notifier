@@ -44,7 +44,7 @@ namespace App.CheckIn.Notifier.Application.EngageSpot
             }
 
             var now = DateTimeOffset.Now;
-            var titleFormat = _applicationLocalizationSource.GetString(NotificationStrings.NoticationTileFormat);
+            var title = _applicationLocalizationSource.GetString(NotificationStrings.NoticationTileFormat);
             var bodyFormat = _applicationLocalizationSource.GetString(NotificationStrings.NoticationBodyFormat);
 
             _logger.LogNotificationsCount(subscriptions.Count);
@@ -55,7 +55,6 @@ namespace App.CheckIn.Notifier.Application.EngageSpot
             foreach (var subscription in subscriptions)
             {
                 var timeToEventStart = subscription.EventStartTime - now;
-                var title = string.Format(titleFormat, subscription.EventName, (int)timeToEventStart.TotalMinutes);
                 var textMessage = string.Format(bodyFormat, subscription.EventName, (int)timeToEventStart.TotalMinutes, subscription.EventRoom);
 
                 var message = EngageSpotMessage.BuildDefaultMessage(subscription.NotificationToken, title, textMessage);

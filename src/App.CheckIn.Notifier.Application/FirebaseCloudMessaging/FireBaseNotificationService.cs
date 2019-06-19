@@ -43,7 +43,7 @@ namespace AppCheckInNotifier.Application.FirebaseCloudMessaging
             }
 
             var now = DateTimeOffset.Now;
-            var titleFormat = _applicationLocalizationSource.GetString(NotificationStrings.NoticationTileFormat);
+            var title = _applicationLocalizationSource.GetString(NotificationStrings.NoticationTileFormat);
             var bodyFormat = _applicationLocalizationSource.GetString(NotificationStrings.NoticationBodyFormat);
 
             _logger.LogNotificationsCount(subscriptions.Count);
@@ -56,7 +56,7 @@ namespace AppCheckInNotifier.Application.FirebaseCloudMessaging
                     var message = new Message
                     {
                         RegistrationIds = new List<string> { subscription.NotificationToken },
-                        Notification = CreateNotification(subscription, now, titleFormat, bodyFormat)
+                        Notification = CreateNotification(subscription, now, title, bodyFormat)
                     };
 
                     _logger.LogFMCMessage(message);
@@ -71,14 +71,14 @@ namespace AppCheckInNotifier.Application.FirebaseCloudMessaging
         private static Notification CreateNotification(
             EventSubscription subscription,
             DateTimeOffset now,
-            string titleFormat,
+            string title,
             string bodyFormat)
         {
             var timeToEventStart = subscription.EventStartTime - now;
 
             return new Notification
             {
-                Title = string.Format(titleFormat, subscription.EventName, (int)timeToEventStart.TotalMinutes),
+                Title = title,
                 Body = string.Format(bodyFormat, subscription.EventName, (int)timeToEventStart.TotalMinutes, subscription.EventRoom)
             };
         }

@@ -1,7 +1,7 @@
 {
     "culture": "pt-BR",
     "texts": {
-        "NoticationTileFormat": "Palestra {0} em {1} minutos",
+        "NoticationTileFormat": "Universo TOTVS",
         "NoticationBodyFormat":  "A palestra {0} inicia em {1} minutos. Dirija-se a sala {2}"
     }
 }

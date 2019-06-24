@@ -57,7 +57,11 @@ namespace App.CheckIn.Notifier.Application.EngageSpot
                 var timeToEventStart = subscription.EventStartTime - now;
                 var textMessage = string.Format(bodyFormat, subscription.EventName, (int)timeToEventStart.TotalMinutes, subscription.EventRoom);
 
-                var message = EngageSpotMessage.BuildDefaultMessage(subscription.NotificationToken, title, textMessage);
+                var message = EngageSpotMessage.BuildDefaultMessage(
+                    subscription.NotificationToken,
+                    title,
+                    textMessage,
+                    subscription.EventCode);
 
                 _logger.LogEngageSpotMessage(message);
 

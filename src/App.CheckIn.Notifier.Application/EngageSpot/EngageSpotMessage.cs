@@ -16,7 +16,7 @@ namespace App.CheckIn.Notifier.Application.EngageSpot
         [JsonProperty("identifiers")]
         public string[] Identifiers { get; set; }
 
-        public static EngageSpotMessage BuildDefaultMessage(string identifier, string title, string message)
+        public static EngageSpotMessage BuildDefaultMessage(string identifier, string title, string message, string eventCode)
         {
             return new EngageSpotMessage
             {
@@ -28,7 +28,7 @@ namespace App.CheckIn.Notifier.Application.EngageSpot
                     Title = title,
                     Message = message,
                     Icon = "https://www.totvs.com/wp-content/uploads/2019/01/logo.png",
-                    Url = "http://google.com"
+                    Url = $"https://checkin.totvs.io/events/{eventCode}"
                 }
             };
         }

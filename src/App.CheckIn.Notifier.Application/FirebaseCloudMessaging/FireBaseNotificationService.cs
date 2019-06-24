@@ -79,7 +79,8 @@ namespace AppCheckInNotifier.Application.FirebaseCloudMessaging
             return new Notification
             {
                 Title = title,
-                Body = string.Format(bodyFormat, subscription.EventName, (int)timeToEventStart.TotalMinutes, subscription.EventRoom)
+                Body = string.Format(bodyFormat, subscription.EventName, (int)timeToEventStart.TotalMinutes, subscription.EventRoom),
+                ClickAction = $"https://checkin.totvs.io/events/{subscription.EventCode}"
             };
         }
     }
